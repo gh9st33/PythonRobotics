@@ -15,8 +15,7 @@ NOTEBOOK_DIR = "../"
 
 
 def get_notebook_path_list(ndir):
-    path = glob.glob(ndir + "**/*.ipynb", recursive=True)
-    return path
+    return glob.glob(f"{ndir}**/*.ipynb", recursive=True)
 
 
 def convert_rst(rstpath):
@@ -41,7 +40,7 @@ def generate_rst(npath):
     dirpath = os.path.dirname(npath)
     # print(dirpath)
 
-    rstpath = os.path.abspath("./modules/" + npath[3:-5] + "rst")
+    rstpath = os.path.abspath(f"./modules/{npath[3:-5]}rst")
     # print(rstpath)
 
     basename = os.path.basename(rstpath)
@@ -51,12 +50,10 @@ def generate_rst(npath):
     print(cmd)
     subprocess.call(cmd, shell=True)
 
-    rstpath = dirpath + "/" + basename
+    rstpath = f"{dirpath}/{basename}"
     convert_rst(rstpath)
 
-    # clean up old files
-    cmd = "rm -rf "
-    cmd += "./modules/"
+    cmd = "rm -rf " + "./modules/"
     cmd += basename[:-4]
     cmd += "*"
     # print(cmd)

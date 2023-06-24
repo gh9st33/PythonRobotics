@@ -102,9 +102,7 @@ class RRT:
         new_node.path_x = [new_node.x]
         new_node.path_y = [new_node.y]
 
-        if extend_length > d:
-            extend_length = d
-
+        extend_length = min(extend_length, d)
         n_expand = math.floor(extend_length / self.path_resolution)
 
         for _ in range(n_expand):
@@ -140,13 +138,14 @@ class RRT:
         return math.hypot(dx, dy)
 
     def get_random_node(self):
-        if random.randint(0, 100) > self.goal_sample_rate:
-            rnd = self.Node(
+        return (
+            self.Node(
                 random.uniform(self.min_rand, self.max_rand),
-                random.uniform(self.min_rand, self.max_rand))
-        else:  # goal point sampling
-            rnd = self.Node(self.end.x, self.end.y)
-        return rnd
+                random.uniform(self.min_rand, self.max_rand),
+            )
+            if random.randint(0, 100) > self.goal_sample_rate
+            else self.Node(self.end.x, self.end.y)
+        )
 
     def draw_graph(self, rnd=None):
         plt.clf()
@@ -182,9 +181,7 @@ class RRT:
     def get_nearest_node_index(node_list, rnd_node):
         dlist = [(node.x - rnd_node.x)**2 + (node.y - rnd_node.y)**2
                  for node in node_list]
-        minind = dlist.index(min(dlist))
-
-        return minind
+        return dlist.index(min(dlist))
 
     @staticmethod
     def check_collision(node, obstacleList):
@@ -212,7 +209,7 @@ class RRT:
 
 
 def main(gx=6.0, gy=10.0):
-    print("start " + __file__)
+    print(f"start {__file__}")
 
     # ====Search Path with RRT====
     obstacleList = [(5, 5, 1), (3, 6, 2), (3, 8, 2), (3, 10, 2), (7, 5, 2),

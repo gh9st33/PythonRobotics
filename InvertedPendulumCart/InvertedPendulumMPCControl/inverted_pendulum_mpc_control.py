@@ -37,8 +37,7 @@ def main():
 
     x = np.copy(x0)
 
-    for i in range(50):
-
+    for _ in range(50):
         # calc control input
         opt_x, opt_delta_x, opt_theta, opt_delta_theta, opt_input = \
             mpc_control(x)
@@ -165,8 +164,7 @@ def plot_cart(xt, theta):
     plt.plot(flatten(rwx), flatten(rwy), "-k")
     plt.plot(flatten(lwx), flatten(lwy), "-k")
     plt.plot(flatten(wx), flatten(wy), "-k")
-    plt.title("x:" + str(round(xt, 2)) + ",theta:" +
-              str(round(math.degrees(theta), 2)))
+    plt.title(f"x:{str(round(xt, 2))},theta:{str(round(math.degrees(theta), 2))}")
 
     plt.axis("equal")
 
